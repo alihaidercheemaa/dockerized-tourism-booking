@@ -21,6 +21,16 @@ COPY . .
 # Copy node_modules from deps to speed up install
 COPY --from=deps /app/node_modules ./node_modules
 
+# Provide safe build-time defaults for env vars so `next build` won't fail
+# These can be overridden with --build-arg when building the image.
+ARG UPLOADTHING_TOKEN=""
+ARG API_URL=""
+ARG AUTH_SECRET=""
+
+ENV UPLOADTHING_TOKEN=${UPLOADTHING_TOKEN}
+ENV API_URL=${API_URL}
+ENV AUTH_SECRET=${AUTH_SECRET}
+
 # Build the Next.js app
 RUN npm run build
 
